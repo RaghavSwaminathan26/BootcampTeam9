@@ -16,7 +16,7 @@ export default function Navbar() {
             <Link href="/visited">Visited</Link>
           </li>
           <li key="want-to-visit">
-            <Link href="/my-wishlist">My Wishlist</Link>
+            <Link href="/want-to-visit">Want to Visit</Link>
           </li>
           <li key="contact">
             <Link href="/contact">Contact</Link>
