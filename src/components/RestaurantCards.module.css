@@ -1,0 +1,79 @@
+.card {
+  overflow: hidden;
+  border: 1px solid #dce4e0;
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 0 0.5rem 1.5rem rgb(31 41 48 / 8%);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 0.9rem 2rem rgb(31 41 48 / 14%);
+}
+
+.imageWrapper {
+  aspect-ratio: 16 / 10;
+  background: #e7eeeb;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #60706a;
+  font-size: 0.875rem;
+}
+
+.content {
+  padding: 1.25rem;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cuisine {
+  margin: 0;
+  color: #47735d;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rating {
+  color: #31443a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.rating span {
+  color: #df9e2a;
+}
+
+.name {
+  margin: 0.55rem 0 0.65rem;
+  color: #1f2930;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.location {
+  margin: 0;
+  color: #61716a;
+  font-size: 0.9rem;
+}
