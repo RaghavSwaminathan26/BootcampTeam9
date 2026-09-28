@@ -3,17 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "@/styles/MyWishList.module.css";
-
-//Restaurant type definition
-type Restaurant = {
-  id: number;
-  name: string;
-  cuisine: string;
-  location: string;
-  status: "visited" | "want-to-visit";
-  rating?: number;
-  imageURL?: string;
-};
+import { Restaurant } from "@/types/restaurant";
 
 //MyWishlist page
 export default function MyWishlist() {
@@ -52,12 +42,6 @@ export default function MyWishlist() {
     }
   }
 
-  //button callback
-  function handle_click() {
-    //fetch the new restaurants
-    fetch_restaurants();
-  }
-
   useEffect(() => {
     //fetch the restaurants when the component mounts
     fetch_restaurants();
@@ -72,9 +56,11 @@ export default function MyWishlist() {
             return (
               <li key={restaurant.id}>
                 <h2>{restaurant.name}</h2>
-                <p>{restaurant.cuisine}</p>
-                <p>{restaurant.location}</p>
-                <p>{restaurant.rating}</p>
+                <div className={styles.desc}>
+                  <p>{restaurant.cuisine}</p>
+                  <p>{restaurant.location}</p>
+                  <p>{restaurant.rating}</p>
+                </div>
                 <Image src={restaurant.imageURL || ""} alt={restaurant.name} width={300} height={200} />
               </li>
             );
@@ -101,7 +87,6 @@ export default function MyWishlist() {
   return (
     <div className={styles.container}>
       <h1>My Wishlist</h1>
-      <button onClick={handle_click}>Update List</button>
       <List />
     </div>
   );

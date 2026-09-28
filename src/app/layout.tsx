@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
-
-//BEGIN REMOVE -----------------------------------
 import Navbar from "@/components/Navbar";
-//END REMOVE -------------------------------------
 
 //! Update metadata to match your project
 export const metadata: Metadata = {
@@ -15,9 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <header>
-          <Navbar />
-        </header>
+        <Navbar />
         {children}
       </body>
     </html>
