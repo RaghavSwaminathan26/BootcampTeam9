@@ -1,0 +1,84 @@
+.page {
+  box-sizing: border-box;
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 5.5rem;
+}
+
+.intro {
+  max-width: 38rem;
+  margin-bottom: 2.25rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #47735d;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0;
+  color: #1f2930;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.description {
+  margin: 1rem 0 0;
+  color: #61716a;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.empty {
+  margin: 0;
+  padding: 2rem;
+  border: 1px dashed #aabbb3;
+  border-radius: 0.75rem;
+  color: #61716a;
+  text-align: center;
+}
+
+.message,
+.error {
+  margin: 0;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.message {
+  background: #edf3f0;
+  color: #47735d;
+}
+
+.error {
+  border: 1px solid #e7b9b4;
+  background: #fff4f2;
+  color: #973f34;
+}
+
+@media (max-width: 52rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 34rem) {
+  .page {
+    padding: 3rem 1.25rem 4rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
