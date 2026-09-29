@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
-import styles from "@/styles/MyWishList.module.css";
 import { Restaurant } from "@/types/restaurant";
+import RestaurantCards from "@/components/RestaurantCards";
+import styles from "@/styles/RestaurantsList.module.css";
 
 //MyWishlist page
 export default function MyWishlist() {
@@ -50,44 +50,45 @@ export default function MyWishlist() {
   //RestaurantsList component - update this with the card when it is created
   function RestaurantsList() {
     return (
-      <div>
-        <ul className={styles.list}>
-          {restaurants?.map((restaurant) => {
-            return (
-              <li key={restaurant.id}>
-                <h2>{restaurant.name}</h2>
-                <div className={styles.desc}>
-                  <p>{restaurant.cuisine}</p>
-                  <p>{restaurant.location}</p>
-                  <p>{restaurant.rating}</p>
-                </div>
-                <Image src={restaurant.imageURL || ""} alt={restaurant.name} width={300} height={200} />
-              </li>
-            );
-          })}
-        </ul>
-        ;
-      </div>
+      <ul className={styles.grid} aria-label="Restaurants on your wishlist">
+        {restaurants.map((restaurant) => (
+          <li key={restaurant.id}>
+            <RestaurantCards restaurant={restaurant} />
+          </li>
+        ))}
+      </ul>
     );
   }
 
   //creates the list according to the current status
   const List = () => {
     if (status === "loading") {
-      return <p>Loading...</p>;
+      return (
+        <p className={styles.message} role="status">
+          Loading your wishlist…
+        </p>
+      );
     } else if (status === "error") {
-      return <p>Error loading restaurants.</p>;
+      return (
+        <p className={styles.error} role="alert">
+          We could not load your wishlist. Please try again later.
+        </p>
+      );
     } else if (restaurants.length === 0) {
-      return <p>No restaurants to display.</p>;
+      return <p className={styles.empty}>You have not added any restaurants to your wishlist yet.</p>;
     } else {
       return <RestaurantsList />;
     }
   };
 
   return (
-    <div className={styles.container}>
-      <h1>My Wishlist</h1>
+    <main className={styles.page}>
+      <header className={styles.intro}>
+        <p className={styles.eyebrow}>Your dining journal</p>
+        <h1>My wishlist</h1>
+        <p className={styles.description}>A collection of the restaurants you would like to experience next.</p>
+      </header>
       <List />
-    </div>
+    </main>
   );
 }
