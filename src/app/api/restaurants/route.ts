@@ -73,7 +73,7 @@ export async function POST(request: Request) {
   }
 
   //extract the restaurant data so we can return it in the response
-  const newRestaurant: Restaurant = {
+  const newRestaurant: RestaurantInput = {
     name,
     cuisine,
     location,
