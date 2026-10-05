@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
+import * as dotenv from "dotenv";
 
-const url: string = process.env.MONGO_URI as string;
 let connection: typeof mongoose;
 
 /**
@@ -9,10 +9,10 @@ let connection: typeof mongoose;
  * @returns {Promise<typeof mongoose>}
  */
 const connectDB = async () => {
+  dotenv.config();
+
   if (!connection) {
-    // uncomment this line once you have the MONGO_URI set up
-    // connection = await mongoose.connect(url);
-    connection = "remove me" as any; // remove me
+    connection = await mongoose.connect(process.env.MONGODB_URI as string);
     return connection;
   }
 };
