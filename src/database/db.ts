@@ -9,7 +9,7 @@ let connection: typeof mongoose;
  * @returns {Promise<typeof mongoose>}
  */
 const connectDB = async () => {
-  dotenv.config();
+  dotenv.config({ path: ".env.local" });
 
   if (!connection) {
     connection = await mongoose.connect(process.env.MONGODB_URI as string);
