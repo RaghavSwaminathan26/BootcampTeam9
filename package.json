@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
     "test": "echo 'Install jest (or another unit test suite) to use this command.'",
-    "prepare": "husky"
+    "prepare": "husky",
+    "seed": "npx tsx --env-file=.env.local src/scripts/seed-database.ts"
   },
   "dependencies": {
     "dotenv": "^18.0.5",
