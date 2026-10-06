@@ -1,6 +1,6 @@
 import clientPromise from "@/lib/mongodb";
 import { m_restaurants } from "@/data/mockRestaurants";
-import { Restaurant } from "@/types/restaurant";
+import { RestaurantInput } from "@/types/restaurant";
 
 // Runs with "npm run seed"
 async function seedDatabase() {
@@ -11,7 +11,7 @@ async function seedDatabase() {
     const db = client.db();
 
     // Pass the imported interface to the collection method
-    const collection = db.collection<Restaurant>("restaurants");
+    const collection = db.collection<RestaurantInput>("restaurants");
 
     console.log("Clearing existing restaurants...");
     await collection.deleteMany({});
