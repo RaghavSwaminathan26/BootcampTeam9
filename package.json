@@ -17,7 +17,7 @@
     "express": "^5.2.1",
     "mongodb": "^7.7.0",
     "mongoose": "^8",
-    "next": "^15.5.24",
+    "next": "^14.2.35",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -27,7 +27,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "^15.5.24",
+    "eslint-config-next": "^14.2.35",
     "eslint-config-prettier": "^9",
     "eslint-plugin-prettier": "^5",
     "husky": "^9",
