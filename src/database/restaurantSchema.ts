@@ -6,7 +6,7 @@ const restaurantSchema = new Schema<RestaurantInput>({
   cuisine: { type: String, required: true },
   location: { type: String, required: true },
   status: { type: String, required: true },
-  rating: { type: Number, required: false },
+  rating: { type: Number, required: true },
   imageURL: { type: String },
 });
 
