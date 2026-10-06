@@ -1,8 +1,7 @@
-import { Restaurant } from "@/types/restaurant";
+import { RestaurantInput } from "@/types/restaurant";
 
-export const m_restaurants: Restaurant[] = [
+export const m_restaurants: RestaurantInput[] = [
   {
-    id: 1,
     name: "The Holy Leaf",
     cuisine: "Mediterranean",
     location: "Vancouver, BC, Canada",
@@ -11,7 +10,6 @@ export const m_restaurants: Restaurant[] = [
     imageURL: "https://img.magnific.com/free-photo/restaurant-interior_1127-3394.jpg?semt=ais_hybrid&w=740&q=80",
   },
   {
-    id: 2,
     name: "The Vineyard",
     cuisine: "French",
     location: "Lyon, France",
@@ -20,28 +18,24 @@ export const m_restaurants: Restaurant[] = [
     imageURL: "https://images.pexels.com/photos/30479386/pexels-photo-30479386.jpeg",
   },
   {
-    id: 3,
     name: "Dave's BBQ & Grill",
     cuisine: "Texas Barbecue",
     location: "Austin, TX, USA",
     status: "want-to-visit",
   },
   {
-    id: 4,
     name: "Little Persia",
     cuisine: "Iranian",
     location: "Atlanta, GA, USA",
     status: "want-to-visit",
   },
   {
-    id: 5,
     name: "Simmer Down",
     cuisine: "Vietnamese",
     location: "Los Angeles, CA, USA",
     status: "want-to-visit",
   },
   {
-    id: 6,
     name: "The Italian Bistro",
     cuisine: "Italian",
     location: "Boston, MA, USA",

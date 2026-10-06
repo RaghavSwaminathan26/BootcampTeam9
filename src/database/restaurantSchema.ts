@@ -1,8 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import { Restaurant } from "@/types/restaurant";
+import { RestaurantInput } from "@/types/restaurant";
 
-const ResturnatSchema = new Schema<Restaurant>({
-  id: { type: Number, required: true, unique: true },
+const restaurantSchema = new Schema<RestaurantInput>({
   name: { type: String, required: true },
   cuisine: { type: String, required: true },
   location: { type: String, required: true },
@@ -11,4 +10,4 @@ const ResturnatSchema = new Schema<Restaurant>({
   imageURL: { type: String },
 });
 
-export default mongoose.models.Restaurant || mongoose.model("Restaurant", ResturnatSchema);
+export default mongoose.models.Restaurant || mongoose.model<RestaurantInput>("Restaurant", restaurantSchema);
