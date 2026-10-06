@@ -1,0 +1,27 @@
+.restForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.restaurantInput {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #ece4dd;
+}
+
+.restaurantInput::placeholder {
+  background-color: #ece4dd;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.inputButton {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #f08c56;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: 15px;
+}
