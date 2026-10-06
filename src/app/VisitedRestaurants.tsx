@@ -4,6 +4,7 @@ import RestaurantCards from "@/components/RestaurantCards";
 import type { Restaurant } from "@/types/restaurant";
 import { useEffect, useState } from "react";
 import styles from "./VisitedRestaurants.module.css";
+import RestaurantForm from "./RestaurantForm";
 
 export default function VisitedRestaurants() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -40,6 +41,11 @@ export default function VisitedRestaurants() {
         <h1>Visited restaurants</h1>
         <p className={styles.description}>A collection of the places you have already enjoyed.</p>
       </header>
+      <RestaurantForm
+        onRestaurantAdded={(restaurant) => {
+          setRestaurants((prev) => [...prev, restaurant]);
+        }}
+      />
 
       {isLoading ? (
         <p className={styles.message} role="status">
