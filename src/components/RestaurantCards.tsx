@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Restaurant } from "@/types/restaurant";
 import styles from "./RestaurantCards.module.css";
 
@@ -13,14 +14,19 @@ export default function RestaurantCards({ restaurant }: RestaurantCardsProps) {
     <article className={styles.card}>
       <div className={styles.imageWrapper}>
         {restaurant.imageURL ? (
-          <img className={styles.image} src={restaurant.imageURL} alt={`${restaurant.name} interior`} />
+          <Image
+            className={styles.image}
+            src={restaurant.imageURL}
+            alt={`${restaurant.name} interior`}
+            width={500}
+            height={300}
+          />
         ) : (
           <div className={styles.imagePlaceholder} aria-hidden="true">
             Restaurant photo coming soon
           </div>
         )}
       </div>
-
       <div className={styles.content}>
         <div className={styles.topRow}>
           <p className={styles.cuisine}>{restaurant.cuisine}</p>
