@@ -5,8 +5,8 @@ const restaurantSchema = new Schema<RestaurantInput>({
   name: { type: String, required: true },
   cuisine: { type: String, required: true },
   location: { type: String, required: true },
-  status: { type: String, required: true },
   rating: { type: Number, required: false },
+  status: { type: String, required: true, enum: ["visited", "want-to-visit"] },
   imageURL: { type: String },
 });
 

@@ -3,7 +3,7 @@ export interface RestaurantInput {
   cuisine: string;
   location: string;
   status: "visited" | "want-to-visit";
-  rating?: number;
+  rating: number;
   imageURL?: string;
 }
 
