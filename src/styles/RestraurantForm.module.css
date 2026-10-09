@@ -1,27 +1,52 @@
 .restForm {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
 }
-
+.restForm h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.restForm p {
+  margin: 0;
+  color: var(--accent);
+}
 .restaurantInput {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: #ece4dd;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
 }
-
-.restaurantInput::placeholder {
-  background-color: #ece4dd;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+.restaurantInput input {
+  width: 100%;
+  min-width: 0;
 }
-
 .inputButton {
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #f08c56;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-size: 15px;
+  align-self: flex-start;
+  padding: 0.85rem 1.2rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.65rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  transition:
+    transform 400ms var(--ease),
+    background 300ms ease;
+}
+.inputButton:hover {
+  transform: translateY(-3px);
+  background: var(--accent-hover);
+}
+.inputButton:active {
+  transform: translateY(1px) scale(0.98);
+}
+@media (max-width: 650px) {
+  .restaurantInput {
+    grid-template-columns: 1fr;
+  }
 }

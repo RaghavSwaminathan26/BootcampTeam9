@@ -84,9 +84,7 @@ export default function MyWishlist() {
   return (
     <main className={styles.page}>
       <header className={styles.intro}>
-        <p className={styles.eyebrow}>Your dining journal</p>
-        <h1>My wishlist</h1>
-        <p className={styles.description}>A collection of the restaurants you would like to experience next.</p>
+        <h1>Want to visit</h1>
       </header>
       <List />
     </main>

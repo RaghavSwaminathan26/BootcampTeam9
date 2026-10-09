@@ -1,22 +1,23 @@
 .card {
   overflow: hidden;
-  border: 1px solid #dce4e0;
+  border: 1px solid var(--border);
   border-radius: 1rem;
-  background: #ffffff;
-  box-shadow: 0 0.5rem 1.5rem rgb(31 41 48 / 8%);
+  background: var(--surface);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 8%);
   transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
+    transform 550ms var(--ease),
+    box-shadow 550ms ease,
+    border-color 400ms ease;
 }
 
 .card:hover {
   transform: translateY(-0.25rem);
-  box-shadow: 0 0.9rem 2rem rgb(31 41 48 / 14%);
+  box-shadow: 0 0.9rem 2rem rgb(0 0 0 / 14%);
 }
 
 .imageWrapper {
   aspect-ratio: 16 / 10;
-  background: #e7eeeb;
+  background: var(--input-background);
 }
 
 .image {
@@ -31,7 +32,7 @@
   width: 100%;
   height: 100%;
   place-items: center;
-  color: #60706a;
+  color: var(--muted);
   font-size: 0.875rem;
 }
 
@@ -48,7 +49,7 @@
 
 .cuisine {
   margin: 0;
-  color: #47735d;
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -56,24 +57,38 @@
 }
 
 .rating {
-  color: #31443a;
+  color: var(--text);
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .rating span {
-  color: #df9e2a;
+  color: var(--accent);
 }
 
 .name {
   margin: 0.55rem 0 0.65rem;
-  color: #1f2930;
+  color: var(--text);
   font-size: 1.35rem;
   line-height: 1.2;
 }
 
 .location {
   margin: 0;
-  color: #61716a;
+  color: var(--muted);
   font-size: 0.9rem;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 16px 35px rgb(0 0 0 / 22%);
+}
+.imageWrapper {
+  overflow: hidden;
+}
+.image {
+  transition: transform 800ms var(--ease);
+}
+.card:hover .image {
+  transform: scale(1.045);
 }

@@ -1,111 +1,129 @@
 .homeMain {
-  min-height: 100vh;
-  background-color: #fdf8f1;
+  width: min(1120px, 100%);
+  margin: auto;
+  padding: 5.5rem 2rem 5rem;
 }
-
 .hero {
-  position: relative;
-  min-height: 470px;
-  background-size: cover;
-  background-position: center;
+  max-width: 800px;
+  padding-bottom: 2rem;
 }
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background-color: #3d1c06;
-}
-
-.heroText {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 50px 0;
-}
-
-.heroText p {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 13px;
-  font-weight: 200;
-  letter-spacing: 2px;
-  color: #fffbf5;
-}
-
-.heroText h1 {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: 400px;
-  font-size: 35px;
-  color: #fffbf5;
-}
-
-.hero h1 em {
-  font-style: italic;
-}
-
-.stats {
-  min-height: 110px;
-  background-color: #3d1c06;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 85px;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 100px;
-}
-
-.statNumber {
-  color: #e8590c;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 28px;
-  line-height: 1;
-  margin-bottom: 9px;
-}
-
-.statLabel {
-  color: #8c6a4e;
-  font-size: 13px;
+.hero h1 {
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
   font-weight: 600;
-  letter-spacing: 1px;
-  text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: -0.055em;
+  line-height: 1.08;
 }
-
-.highlights {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 65px 0 100px;
+.hero h1 span {
+  color: var(--accent);
+}
+.hero p {
+  max-width: 440px;
+  margin-bottom: 2rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 1.3rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.7rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 450ms var(--ease),
+    background 300ms ease,
+    box-shadow 450ms ease;
+}
+.primaryLink:hover {
+  transform: translateY(-3px);
+  background: var(--accent-hover);
+  box-shadow: 0 8px 28px var(--accent-glow);
+}
+.primaryLink:active {
+  transform: translateY(1px) scale(0.98);
+}
+.collections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.collection {
+  padding: 1.8rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  text-decoration: none;
+  transition:
+    transform 550ms var(--ease),
+    background 400ms ease,
+    border-color 400ms ease,
+    box-shadow 550ms ease;
+}
+.collection:hover {
+  transform: translateY(-6px);
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  box-shadow: 0 16px 35px rgb(0 0 0 / 18%);
+}
+.collection:active {
+  transform: translateY(-1px) scale(0.99);
+}
+.cardTop {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 2rem;
 }
-
-.highlightPreheader {
-  color: #e8590c;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-hover);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 1.6rem;
 }
-
-.highlightHeader h2 {
-  margin: 0;
-  color: #2d1a0e;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 30px;
-  line-height: 1.2;
+.arrow {
+  color: var(--muted);
+  font-size: 1.5rem;
+  transition:
+    transform 450ms var(--ease),
+    color 300ms ease;
 }
-
-.highlights a {
-  color: #e8590c;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.collection:hover .arrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+.collection h2 {
+  margin-bottom: 0.65rem;
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.collection p {
+  max-width: 350px;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+}
+.cardLink {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+@media (max-width: 600px) {
+  .homeMain {
+    padding: 3.5rem 1.25rem;
+  }
+  .hero {
+    padding-bottom: 3rem;
+  }
+  .collections {
+    grid-template-columns: 1fr;
+  }
 }

@@ -54,10 +54,11 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
   return (
     //when the form is sumbitted the handleSumbit function will run
     <form className={styles.restForm} onSubmit={handleSubmit}>
-      <h2>Add a restaurant!</h2>
+      <h2>Add a restaurant</h2>
       <div className={styles.restaurantInput}>
         <input
           type="text"
+          aria-label="Restaurant name"
           placeholder="Restaurant name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -65,6 +66,7 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
         />
         <input
           type="text"
+          aria-label="Cuisine"
           placeholder="Cuisine"
           value={cuisine}
           onChange={(e) => setCuisine(e.target.value)}
@@ -72,6 +74,7 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
         />
         <input
           type="text"
+          aria-label="Location"
           placeholder="Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}

@@ -1,49 +1,36 @@
+import Link from "next/link";
 import styles from "@/styles/Home.module.css";
 
 export default function Home() {
   return (
-    <>
-      <main className={styles.homeMain}>
-        <section className={styles.hero}>
-          <div className={styles.heroOverlay}></div>
-          <div className={styles.heroText}>
-            <p className={styles.preHeader}>YOUR PERSONAL DINNING JOURNAL</p>
-            <h1>
-              Every great meal <br /> <em>deserves to be remembered.</em>
-            </h1>
+    <main className={styles.homeMain}>
+      <section className={styles.hero}>
+        <h1>Home</h1>
+      </section>
+      <section className={styles.collections} aria-label="Your restaurant collections">
+        <Link className={styles.collection} href="/visited">
+          <div className={styles.cardTop}>
+            <span className={styles.icon} aria-hidden="true">
+              ⌖
+            </span>
+            <span className={styles.arrow} aria-hidden="true">
+              ↗
+            </span>
           </div>
-        </section>
-
-        <section className={styles.stats}>
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>RESTAURANTS VISITED</span>
+          <h2>Visited restaurants</h2>
+        </Link>
+        <Link className={styles.collection} href="/want-to-visit">
+          <div className={styles.cardTop}>
+            <span className={styles.icon} aria-hidden="true">
+              ＋
+            </span>
+            <span className={styles.arrow} aria-hidden="true">
+              ↗
+            </span>
           </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>ON THE WISHLIST</span>
-          </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>COUNTRIES EXPLORED</span>
-          </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>4.8</span>
-            <span className={styles.statLabel}>AVERAGE RATING</span>
-          </div>
-        </section>
-
-        <section className={styles.highlights}>
-          <div className={styles.highlightHeader}>
-            <p className={styles.highlightPreheader}>Recent Highlights</p>
-            <h2>From the Dining Log</h2>
-            <a href="/visited">See All</a>
-          </div>
-        </section>
-      </main>
-    </>
+          <h2>Want to visit</h2>
+        </Link>
+      </section>
+    </main>
   );
 }
