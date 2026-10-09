@@ -1,66 +1,77 @@
 .contactMain {
-  flex: 1;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fff8f0;
+  width: min(800px, 100%);
+  margin: auto;
+  padding: 5.5rem 2rem;
 }
-
-.contactSection {
-  max-width: 615px;
-  margin: 40px auto 100px;
-}
-
-.preHeader {
-  color: #e8590c;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
 .contactMain h1 {
-  font-size: 45px;
-  font-weight: 7500;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  letter-spacing: 1px;
-  color: #2d1a0e;
+  margin-bottom: 2.5rem;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
 }
-
 .intro {
-  color: #8c6a4e;
+  max-width: 540px;
+  margin-bottom: 2.5rem;
+  color: var(--muted);
+  font-size: 1.1rem;
 }
-
 .contactForm {
-  max-width: 650px;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
 }
-
 .formGroup {
-  margin-bottom: 23px;
+  min-width: 0;
 }
-
+.formGroup:nth-child(3) {
+  grid-column: 1 / -1;
+}
 .formGroup label {
   display: block;
-  margin-bottom: 8px;
-  color: #2d1a0e;
-  font-size: 13px;
-  font-weight: 700;
+  margin-bottom: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .formGroup input,
 .formGroup textarea {
   width: 100%;
-  box-sizing: border-box;
-  border: 2px solid #edd9c0;
-  border-radius: 5px;
-
-  background-color: #ece4dd;
-  font-size: 14px;
 }
-
 .formGroup textarea {
-  min-height: 140px;
+  min-height: 165px;
   resize: vertical;
 }
-
-.formGroup input::placeholder,
-.formGroup textarea::placeholder {
-  color: #8c6a4e;
+.contactForm input[type="submit"] {
+  justify-self: start;
+  grid-column: 1 / -1;
+  padding: 0.9rem 1.4rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.65rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  transition:
+    transform 400ms var(--ease),
+    background 300ms ease,
+    box-shadow 400ms ease;
+}
+.contactForm input[type="submit"]:hover {
+  transform: translateY(-3px);
+  background: var(--accent-hover);
+  box-shadow: 0 7px 20px var(--accent-glow);
+}
+.contactForm input[type="submit"]:active {
+  transform: translateY(1px) scale(0.98);
+}
+@media (max-width: 600px) {
+  .contactMain {
+    padding: 3.5rem 1.25rem;
+  }
+  .contactForm {
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+  }
 }

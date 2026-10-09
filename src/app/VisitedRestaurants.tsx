@@ -37,9 +37,7 @@ export default function VisitedRestaurants() {
   return (
     <main className={styles.page}>
       <header className={styles.intro}>
-        <p className={styles.eyebrow}>Your dining journal</p>
         <h1>Visited restaurants</h1>
-        <p className={styles.description}>A collection of the places you have already enjoyed.</p>
       </header>
       <RestaurantForm
         onRestaurantAdded={(restaurant) => {

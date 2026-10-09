@@ -1,0 +1,142 @@
+:root {
+  color-scheme: dark;
+  --background: #211a15;
+  --surface: #382b22;
+  --surface-hover: #443429;
+  --border: #65503e;
+  --text: #fff3e0;
+  --muted: #d3bda4;
+  --accent: #f4b477;
+  --accent-hover: #ffd1a0;
+  --on-accent: #29190e;
+  --border-hover: #a7805c;
+  --input-background: #2a211b;
+  --input-focus: #34281f;
+  --placeholder: #bda48a;
+  --accent-glow: rgb(244 180 119 / 12%);
+  --nav-background: #c2a582;
+  --nav-active: #f0d8b5;
+  --nav-hover: #dfbf96;
+  --nav-text: #4c3525;
+  --nav-text-active: #382418;
+  --nav-indicator: #a85524;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--background);
+  background-image: url("/food-pattern.svg");
+  background-size: 600px 480px;
+  color: var(--text);
+  font-family: var(--font-readable), "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: var(--accent);
+  color: var(--background);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+h1,
+h2 {
+  text-wrap: balance;
+}
+p {
+  line-height: 1.7;
+}
+main {
+  animation:
+    page-fade-in 1800ms ease-in-out both,
+    page-rise-in 2000ms var(--ease) both,
+    page-focus-in 1000ms ease-in-out backwards;
+}
+input:not([type="submit"]),
+textarea {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--input-background);
+  color: var(--text);
+  transition:
+    border-color 250ms ease,
+    background 250ms ease,
+    box-shadow 250ms ease;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder);
+}
+input:not([type="submit"]):hover,
+textarea:hover {
+  border-color: var(--border-hover);
+}
+input:not([type="submit"]):focus,
+textarea:focus {
+  border-color: var(--accent);
+  background: var(--input-focus);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  outline: none;
+}
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes page-rise-in {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes page-focus-in {
+  from {
+    filter: blur(6px);
+  }
+  to {
+    filter: blur(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

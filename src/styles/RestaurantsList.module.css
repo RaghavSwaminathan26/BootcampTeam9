@@ -12,7 +12,7 @@
 
 .eyebrow {
   margin: 0 0 0.5rem;
-  color: #47735d;
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -21,7 +21,7 @@
 
 .intro h1 {
   margin: 0;
-  color: #1f2930;
+  color: var(--text);
   font-size: clamp(2.25rem, 5vw, 4rem);
   letter-spacing: -0.04em;
   line-height: 1;
@@ -29,7 +29,7 @@
 
 .description {
   margin: 1rem 0 0;
-  color: #61716a;
+  color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.5;
 }
@@ -55,9 +55,9 @@
 .empty {
   margin: 0;
   padding: 2rem;
-  border: 1px dashed #aabbb3;
+  border: 1px dashed var(--border);
   border-radius: 0.75rem;
-  color: #61716a;
+  color: var(--muted);
   text-align: center;
 }
 
@@ -70,14 +70,14 @@
 }
 
 .message {
-  background: #edf3f0;
-  color: #47735d;
+  background: var(--surface);
+  color: var(--accent);
 }
 
 .error {
-  border: 1px solid #e7b9b4;
-  background: #fff4f2;
-  color: #973f34;
+  border: 1px solid #805356;
+  background: #342527;
+  color: #f0b8b1;
 }
 
 @media (max-width: 52rem) {
