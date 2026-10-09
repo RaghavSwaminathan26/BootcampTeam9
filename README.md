@@ -2,12 +2,15 @@
 
 A personal restaurant-tracking web app where users can log restaurants they've visited and restaurants they want to visit.
 
+**Live site:** [https://bootcamp-team9.vercel.app](https://bootcamp-team9.vercel.app)
+
 ## Table of Contents
 
-- [Overview](https://github.com/RaghavSwaminathan26/BootcampTeam9#overview)
-  - [Purpose](https://github.com/RaghavSwaminathan26/BootcampTeam9#purpose)
-  - [Team](https://github.com/RaghavSwaminathan26/BootcampTeam9#team)
-- [Getting Started And Contributing](https://github.com/RaghavSwaminathan26/BootcampTeam9#getting-started-and-contributing)
+* [Overview](https://github.com/RaghavSwaminathan26/BootcampTeam9#overview)
+  * [Purpose](https://github.com/RaghavSwaminathan26/BootcampTeam9#purpose)
+  * [Team](https://github.com/RaghavSwaminathan26/BootcampTeam9#team)
+* [Tech Stack](https://github.com/RaghavSwaminathan26/BootcampTeam9#tech-stack)
+* [Getting Started And Contributing](https://github.com/RaghavSwaminathan26/BootcampTeam9#getting-started-and-contributing)
 
 ## Overview
 
@@ -19,12 +22,21 @@ This is a practice project for our Hack4Impact bootcamp team, built before we're
 
 The BootcampTeam9 team consists of 6 Cal Poly students. Over the course of this bootcamp, we are working as a team to build and deploy this web application. The team members are listed below:
 
-- [Raghav Swaminathan](https://www.linkedin.com/) - Tech Lead
-- [Jonathan Desjardins-Wiggins](https://www.linkedin.com/) - Software Developer
-- [Grace Mills](https://www.linkedin.com/) - Software Developer
-- [Ty Shimizu](https://www.linkedin.com/) - Software Developer
-- [Gwyn Marin](https://www.linkedin.com/) - Software Developer
-- [Sully Palaia](https://www.linkedin.com/) - Software Developer
+* [Raghav Swaminathan](https://www.linkedin.com/) - Tech Lead
+* [Jonathan Desjardins-Wiggins](https://www.linkedin.com/) - Software Developer
+* [Grace Mills](https://www.linkedin.com/) - Software Developer
+* [Ty Shimizu](https://www.linkedin.com/) - Software Developer
+* [Gwyn Marin](https://www.linkedin.com/) - Software Developer
+* [Sully Palaia](https://www.linkedin.com/) - Software Developer
+
+## Tech Stack
+
+* **Framework:** Next.js 14 (App Router)
+* **Language:** TypeScript
+* **Database:** MongoDB Atlas
+* **Testing:** Vitest
+* **Deployment:** Vercel
+* **CI:** GitHub Actions
 
 ## Getting Started And Contributing
 
