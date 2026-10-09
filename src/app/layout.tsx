@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Atkinson_Hyperlegible_Next } from "next/font/google";
+import { Atkinson_Hyperlegible } from "next/font/google";
 import Navbar from "@/components/Navbar";
 
 import "./globals.css";
 
-const readableFont = Atkinson_Hyperlegible_Next({
+const readableFont = Atkinson_Hyperlegible({
+  weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
   adjustFontFallback: false,
