@@ -7,7 +7,6 @@ require("dotenv").config({ path: ".env.local" });
 const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGODB_URI;
-
 if (!uri) {
   console.error("❌ MONGODB_URI is not set. Check that .env.local exists in the project root and contains it.");
   process.exit(1);

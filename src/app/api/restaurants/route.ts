@@ -11,7 +11,7 @@ function formatRestaurant(document: {
   cuisine: string;
   location: string;
   status: "visited" | "want-to-visit";
-  rating?: number;
+  rating: number;
   imageURL?: string;
 }): Restaurant {
   return {
@@ -65,8 +65,11 @@ export async function POST(request: Request) {
   //make sure name, cuisine, location, and status are provided and valid
   if (
     typeof name !== "string" ||
+    name === "" ||
     typeof cuisine !== "string" ||
+    cuisine === "" ||
     typeof location !== "string" ||
+    location === "" ||
     (status !== "visited" && status !== "want-to-visit")
   ) {
     return NextResponse.json({ error: "name, cuisine, location, and a valid status are required" }, { status: 400 });

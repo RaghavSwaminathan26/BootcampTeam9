@@ -22,6 +22,11 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
     //clear previous message
     setMessage("");
 
+    if (name === "" || cuisine === "" || location === "") {
+      setMessage("Please fill out all required fields.");
+      return null;
+    }
+
     try {
       //send info inputed to backend
       const response = await fetch("/api/restaurants", {
@@ -37,7 +42,9 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
         }),
       });
       if (!response.ok) {
-        throw new Error("Failed to add restaurant");
+        const data = await response.json();
+        setMessage(data.error || "Unable to add restaurant");
+        return;
       }
       //get new Restaurant from backend
       const newRestaurant: Restaurant = await response.json();
