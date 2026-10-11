@@ -22,18 +22,21 @@ export const m_restaurants: RestaurantInput[] = [
     cuisine: "Texas Barbecue",
     location: "Austin, TX, USA",
     status: "want-to-visit",
+    rating: 3,
   },
   {
     name: "Little Persia",
     cuisine: "Iranian",
     location: "Atlanta, GA, USA",
     status: "want-to-visit",
+    rating: 2,
   },
   {
     name: "Simmer Down",
     cuisine: "Vietnamese",
     location: "Los Angeles, CA, USA",
     status: "want-to-visit",
+    rating: 1,
   },
   {
     name: "The Italian Bistro",
