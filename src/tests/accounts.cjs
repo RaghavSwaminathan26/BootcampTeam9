@@ -74,6 +74,8 @@ test("passwords use unique salts and reject the wrong password", async () => {
 test("signup, login, account isolation, embedded restaurants, expiry, and logout", async () => {
   assert.equal((await users.GET()).status, 401);
   assert.equal((await restaurants.GET()).status, 401);
+  assert.equal((await restaurants.PATCH(request({ id: "a".repeat(24), status: "visited" }, "PATCH"))).status, 401);
+  assert.equal((await restaurants.DELETE(request({ id: "a".repeat(24) }, "DELETE"))).status, 401);
   assert.equal((await restaurants.POST(request(restaurant))).status, 401);
   assert.equal((await users.POST(request(null))).status, 400);
   assert.equal((await users.POST(request({ username: { $ne: null }, password: first.password }))).status, 400);
@@ -106,7 +108,37 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   assert.equal((await restaurants.POST(request({ ...restaurant, imageURL: "javascript:alert(1)" }))).status, 400);
   const added = await restaurants.POST(request({ ...restaurant, imageURL: "https://example.com/restaurant.jpg" }));
   assert.equal(added.status, 201);
-  assert.match((await added.json()).id, /^[a-f0-9]{24}$/);
+  const addedRestaurant = await added.json();
+  assert.match(addedRestaurant.id, /^[a-f0-9]{24}$/);
+  for (const status of ["want-to-visit", "want-to-visit", "visited"]) {
+    assert.equal((await restaurants.PATCH(request({ id: addedRestaurant.id, status }, "PATCH"))).status, 204);
+    const saved = (await (await restaurants.GET()).json()).find((item) => item.id === addedRestaurant.id);
+    assert.equal(saved.status, status);
+    assert.equal(saved.imageURL, "https://example.com/restaurant.jpg");
+  }
+  for (const body of [null, { id: "invalid", status: "visited" }, { id: addedRestaurant.id, status: "invalid" }]) {
+    assert.equal((await restaurants.PATCH(request(body, "PATCH"))).status, 400);
+  }
+  for (const method of ["PATCH", "DELETE"]) {
+    assert.equal(
+      (
+        await restaurants[method](
+          request({ id: addedRestaurant.id, status: "visited" }, method, "https://other.example"),
+        )
+      ).status,
+      403,
+    );
+    assert.equal((await restaurants[method](request({ id: "a".repeat(24), status: "visited" }, method))).status, 404);
+  }
+  for (const status of ["visited", "want-to-visit"]) {
+    const removable = await (await restaurants.POST(request({ ...restaurant, status }))).json();
+    assert.equal((await restaurants.DELETE(request({ id: removable.id }, "DELETE"))).status, 204);
+    assert.equal((await restaurants.DELETE(request({ id: removable.id }, "DELETE"))).status, 404);
+    assert.equal(
+      (await (await restaurants.GET()).json()).some((item) => item.id === removable.id),
+      false,
+    );
+  }
   const concurrent = await Promise.all([
     restaurants.POST(request({ ...restaurant, name: "Second", status: "want-to-visit" })),
     restaurants.POST(request({ ...restaurant, name: "Third" })),
@@ -121,6 +153,11 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   cookieValues.clear();
   assert.equal((await users.POST(request(second))).status, 201);
   assert.deepEqual(await (await restaurants.GET()).json(), []);
+  assert.equal(
+    (await restaurants.PATCH(request({ id: addedRestaurant.id, status: "want-to-visit" }, "PATCH"))).status,
+    404,
+  );
+  assert.equal((await restaurants.DELETE(request({ id: addedRestaurant.id }, "DELETE"))).status, 404);
   assert.equal((await restaurants.POST(request({ ...restaurant, username: first.username }))).status, 201);
   assert.equal((await (await restaurants.GET()).json()).length, 1);
   assert.equal((await UserModel.findById(storedUser._id)).restaurants.length, 3);

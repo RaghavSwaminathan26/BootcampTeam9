@@ -5,7 +5,7 @@ import { RestaurantInput, Restaurant } from "@/types/restaurant";
 
 export const dynamic = "force-dynamic";
 
-//allow local images and the web image URLs supported by this app
+// Allow local images and the web image URLs supported by this app.
 function validImageURL(value: unknown) {
   if (value === undefined || value === "") return true;
   if (typeof value !== "string" || value.length > 2048) return false;
@@ -18,7 +18,7 @@ function validImageURL(value: unknown) {
   }
 }
 
-//format the restaurant subdocument for the cards on the page
+// Format the restaurant subdocument for the cards on the page.
 function formatRestaurant(document: RestaurantInput & { _id: Types.ObjectId }): Restaurant {
   return {
     id: document._id.toString(),
@@ -31,7 +31,7 @@ function formatRestaurant(document: RestaurantInput & { _id: Types.ObjectId }): 
   };
 }
 
-//get only the logged-in user's restaurants
+// Get only the logged-in user's restaurants.
 export async function GET() {
   try {
     const user = await getCurrentUser();
@@ -42,7 +42,7 @@ export async function GET() {
   }
 }
 
-//add a restaurant inside the user's document
+// Add a restaurant inside the user's document.
 export async function POST(request: Request) {
   if (!isSameOrigin(request)) return Response.json({ error: "Invalid request origin" }, { status: 403 });
   try {
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Invalid restaurant" }, { status: 400 });
     const { name, cuisine, location, status, rating, imageURL } = body;
 
-    //make sure the restaurant fields are provided and valid
+    // Make sure the restaurant fields are provided and valid.
     if (
       [name, cuisine, location].some((value) => typeof value !== "string" || !value.trim() || value.length > 200) ||
       (status !== "visited" && status !== "want-to-visit") ||
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
       rating,
       imageURL,
     };
-    //push atomically so two additions cannot overwrite one another
+    // Push atomically so two additions cannot overwrite one another.
     const result = await UserModel.updateOne(
       { _id: user._id },
       { $push: { restaurants: restaurant } },
@@ -90,4 +90,43 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Failed to add restaurant" }, { status: 500 });
   }
+}
+
+// Update or remove only a restaurant belonging to the current account.
+async function changeRestaurant(request: Request, remove: boolean) {
+  if (!isSameOrigin(request)) return Response.json({ error: "Invalid request origin" }, { status: 403 });
+  try {
+    const user = await getCurrentUser();
+    if (!user) return Response.json({ error: "Please log in first" }, { status: 401 });
+
+    const body = await request.json().catch(() => null);
+    if (
+      !body ||
+      typeof body.id !== "string" ||
+      !/^[a-f0-9]{24}$/i.test(body.id) ||
+      (!remove && body.status !== "visited" && body.status !== "want-to-visit")
+    ) {
+      return Response.json({ error: "Invalid restaurant or status" }, { status: 400 });
+    }
+
+    const result = await UserModel.updateOne(
+      { _id: user._id, "restaurants._id": new Types.ObjectId(body.id) },
+      remove
+        ? { $pull: { restaurants: { _id: new Types.ObjectId(body.id) } } }
+        : { $set: { "restaurants.$.status": body.status } },
+      { runValidators: true },
+    );
+    if (!result.matchedCount) return Response.json({ error: "Restaurant not found" }, { status: 404 });
+    return new Response(null, { status: 204 });
+  } catch {
+    return Response.json({ error: "Failed to update restaurant" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  return changeRestaurant(request, false);
+}
+
+export async function DELETE(request: Request) {
+  return changeRestaurant(request, true);
 }

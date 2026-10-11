@@ -64,7 +64,15 @@ export default function VisitedRestaurants() {
       ) : visitedRestaurants.length ? (
         <section className={styles.grid} aria-label="Visited restaurants">
           {visitedRestaurants.map((restaurant) => (
-            <RestaurantCards key={restaurant.id} restaurant={restaurant} />
+            <RestaurantCards
+              key={restaurant.id}
+              restaurant={restaurant}
+              onRestaurantChanged={(updated) =>
+                setRestaurants((previous) =>
+                  previous.flatMap((item) => (item.id === restaurant.id ? (updated ? [updated] : []) : [item])),
+                )
+              }
+            />
           ))}
         </section>
       ) : (
