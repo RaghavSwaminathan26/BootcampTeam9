@@ -74,7 +74,7 @@ describe("Restaurant API routes", () => {
     expect(mocks.create).not.toHaveBeenCalled();
   });
 
-  it("POST creates and returns a valid RestaurantInput", async () => {
+  it("POST creates and returns a valid Restaurant", async () => {
     const restaurant: RestaurantInput = {
       name: "Taco Town",
       cuisine: "Mexican",
