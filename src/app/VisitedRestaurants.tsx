@@ -1,5 +1,6 @@
 "use client";
 
+import { useAccount } from "@/components/AccountProvider";
 import RestaurantCards from "@/components/RestaurantCards";
 import type { Restaurant } from "@/types/restaurant";
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import styles from "./VisitedRestaurants.module.css";
 import RestaurantForm from "./RestaurantForm";
 
 export default function VisitedRestaurants() {
+  const { refresh } = useAccount();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,6 +18,10 @@ export default function VisitedRestaurants() {
       try {
         const response = await fetch("/api/restaurants");
 
+        if (response.status === 401) {
+          await refresh();
+          return;
+        }
         if (!response.ok) {
           throw new Error("Unable to load restaurants.");
         }
@@ -30,7 +36,7 @@ export default function VisitedRestaurants() {
     }
 
     loadRestaurants();
-  }, []);
+  }, [refresh]);
 
   const visitedRestaurants = restaurants.filter((restaurant) => restaurant.status === "visited");
 
@@ -39,11 +45,13 @@ export default function VisitedRestaurants() {
       <header className={styles.intro}>
         <h1>Visited restaurants</h1>
       </header>
-      <RestaurantForm
-        onRestaurantAdded={(restaurant) => {
-          setRestaurants((prev) => [...prev, restaurant]);
-        }}
-      />
+      {!isLoading && !error && (
+        <RestaurantForm
+          onRestaurantAdded={(restaurant) => {
+            setRestaurants((prev) => [...prev, restaurant]);
+          }}
+        />
+      )}
 
       {isLoading ? (
         <p className={styles.message} role="status">

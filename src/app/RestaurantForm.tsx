@@ -1,14 +1,18 @@
 "use client";
 
+import { useAccount } from "@/components/AccountProvider";
 import { useState } from "react";
 import { Restaurant } from "@/types/restaurant";
 import styles from "@/styles/RestraurantForm.module.css";
 
 type RestaurantFormProps = {
+  status?: "visited" | "want-to-visit";
   onRestaurantAdded: (restaurant: Restaurant) => void;
 };
 
-export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProps) {
+export default function RestaurantForm({ onRestaurantAdded, status = "visited" }: RestaurantFormProps) {
+  const { refresh } = useAccount();
+  const [saving, setSaving] = useState(false);
   //state variables
   const [name, setName] = useState("");
   const [cuisine, setCuisine] = useState("");
@@ -21,6 +25,7 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
     e.preventDefault();
     //clear previous message
     setMessage("");
+    setSaving(true);
 
     try {
       //send info inputed to backend
@@ -33,11 +38,16 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
           name,
           cuisine,
           location,
-          status: "visited",
+          status,
         }),
       });
+      if (response.status === 401) {
+        await refresh();
+        return;
+      }
       if (!response.ok) {
-        throw new Error("Failed to add restaurant");
+        const data = await response.json();
+        throw new Error(data.error || "Failed to add restaurant");
       }
       //get new Restaurant from backend
       const newRestaurant: Restaurant = await response.json();
@@ -48,7 +58,9 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
       setLocation("");
     } catch (error) {
       console.error(error);
-      setMessage("Unable to add");
+      setMessage(error instanceof Error ? error.message : "Unable to add");
+    } finally {
+      setSaving(false);
     }
   }
   return (
@@ -62,6 +74,8 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
           placeholder="Restaurant name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          maxLength={200}
+          disabled={saving}
           required
         />
         <input
@@ -70,6 +84,8 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
           placeholder="Cuisine"
           value={cuisine}
           onChange={(e) => setCuisine(e.target.value)}
+          maxLength={200}
+          disabled={saving}
           required
         />
         <input
@@ -78,12 +94,14 @@ export default function RestaurantForm({ onRestaurantAdded }: RestaurantFormProp
           placeholder="Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
+          maxLength={200}
+          disabled={saving}
           required
         />
       </div>
 
-      <button className={styles.inputButton} type="submit">
-        Add Restaurant
+      <button className={styles.inputButton} type="submit" disabled={saving}>
+        {saving ? "Adding…" : "Add Restaurant"}
       </button>
       {message && <p role="status">{message}</p>}
     </form>

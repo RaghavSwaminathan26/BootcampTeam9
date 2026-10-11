@@ -1,12 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { AccountGate, useAccount } from "@/components/AccountProvider";
+import RestaurantForm from "@/app/RestaurantForm";
+import { useState, useEffect, useCallback } from "react";
 import { Restaurant } from "@/types/restaurant";
 import RestaurantCards from "@/components/RestaurantCards";
 import styles from "@/styles/RestaurantsList.module.css";
 
 //MyWishlist page
-export default function MyWishlist() {
+export default function WishlistPage() {
+  return (
+    <AccountGate>
+      <MyWishlist />
+    </AccountGate>
+  );
+}
+
+function MyWishlist() {
+  const { refresh } = useAccount();
   //create state to allow for dynamic updates to restaurants list
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
@@ -14,11 +25,15 @@ export default function MyWishlist() {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
 
   //fetches restaurants from the api/restaurants route
-  async function fetch_restaurants() {
+  const fetch_restaurants = useCallback(async () => {
     setStatus("loading");
 
     try {
       const response = await fetch("/api/restaurants");
+      if (response.status === 401) {
+        await refresh();
+        return;
+      }
       if (!response.ok) {
         throw new Error(response.statusText);
       }
@@ -40,12 +55,12 @@ export default function MyWishlist() {
       console.error(error);
       setStatus("error");
     }
-  }
+  }, [refresh]);
 
   useEffect(() => {
     //fetch the restaurants when the component mounts
     fetch_restaurants();
-  }, []);
+  }, [fetch_restaurants]);
 
   //RestaurantsList component - update this with the card when it is created
   function RestaurantsList() {
@@ -86,6 +101,12 @@ export default function MyWishlist() {
       <header className={styles.intro}>
         <h1>Want to visit</h1>
       </header>
+      {status === "loaded" && (
+        <RestaurantForm
+          status="want-to-visit"
+          onRestaurantAdded={(restaurant) => setRestaurants((previous) => [...previous, restaurant])}
+        />
+      )}
       <List />
     </main>
   );

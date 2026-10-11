@@ -6,11 +6,11 @@ A personal restaurant-tracking web app where users can log restaurants they've v
 
 ## Table of Contents
 
-* [Overview](https://github.com/RaghavSwaminathan26/BootcampTeam9#overview)
-  * [Purpose](https://github.com/RaghavSwaminathan26/BootcampTeam9#purpose)
-  * [Team](https://github.com/RaghavSwaminathan26/BootcampTeam9#team)
-* [Tech Stack](https://github.com/RaghavSwaminathan26/BootcampTeam9#tech-stack)
-* [Getting Started And Contributing](https://github.com/RaghavSwaminathan26/BootcampTeam9#getting-started-and-contributing)
+- [Overview](https://github.com/RaghavSwaminathan26/BootcampTeam9#overview)
+  - [Purpose](https://github.com/RaghavSwaminathan26/BootcampTeam9#purpose)
+  - [Team](https://github.com/RaghavSwaminathan26/BootcampTeam9#team)
+- [Tech Stack](https://github.com/RaghavSwaminathan26/BootcampTeam9#tech-stack)
+- [Getting Started And Contributing](https://github.com/RaghavSwaminathan26/BootcampTeam9#getting-started-and-contributing)
 
 ## Overview
 
@@ -22,24 +22,47 @@ This is a practice project for our Hack4Impact bootcamp team, built before we're
 
 The BootcampTeam9 team consists of 6 Cal Poly students. Over the course of this bootcamp, we are working as a team to build and deploy this web application. The team members are listed below:
 
-* [Raghav Swaminathan](https://www.linkedin.com/) - Tech Lead
-* [Jonathan Desjardins-Wiggins](https://www.linkedin.com/) - Software Developer
-* [Grace Mills](https://www.linkedin.com/) - Software Developer
-* [Ty Shimizu](https://www.linkedin.com/) - Software Developer
-* [Gwyn Marin](https://www.linkedin.com/) - Software Developer
-* [Sully Palaia](https://www.linkedin.com/) - Software Developer
+- [Raghav Swaminathan](https://www.linkedin.com/) - Tech Lead
+- [Jonathan Desjardins-Wiggins](https://www.linkedin.com/) - Software Developer
+- [Grace Mills](https://www.linkedin.com/) - Software Developer
+- [Ty Shimizu](https://www.linkedin.com/) - Software Developer
+- [Gwyn Marin](https://www.linkedin.com/) - Software Developer
+- [Sully Palaia](https://www.linkedin.com/) - Software Developer
 
 ## Tech Stack
 
-* **Framework:** Next.js 14 (App Router)
-* **Language:** TypeScript
-* **Database:** MongoDB Atlas
-* **Testing:** Vitest
-* **Deployment:** Vercel
-* **CI:** GitHub Actions
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Database:** MongoDB Atlas
+- **Testing:** Vitest
+- **Deployment:** Vercel
+- **CI:** GitHub Actions
 
 ## Getting Started And Contributing
 
 Visit [getting-started.md](https://github.com/RaghavSwaminathan26/BootcampTeam9/blob/develop/docs/getting-started.md) on info for how to set up this repo.
 
 Visit [contributing.md](https://github.com/RaghavSwaminathan26/BootcampTeam9/blob/develop/docs/contributing.md) on info for how to contribute to this repo.
+
+## Accounts and restaurant storage
+
+Open `/login` to create an account or log in. The same page lets you log out.
+Usernames are case-insensitive, and passwords must be 8–128 characters.
+Accounts are stored in the `users` collection with salted password hashes and
+an embedded `restaurants` array. Sessions last seven days and use an HttpOnly
+cookie; only a hash of each session token is stored in the `sessions` collection.
+
+`GET /api/users` returns the current account, and `POST /api/users` creates an
+account. `POST /api/session` logs in, and `DELETE /api/session` logs out.
+`GET` and `POST /api/restaurants` read and add restaurants inside the logged-in
+user's document. Both the visited and wishlist pages require login.
+
+Keep `MONGODB_URI` in `.env.local`. Existing records in the old `restaurants`
+collection are not assigned to accounts automatically. The old seed command
+still populates that separate collection; new accounts start with empty lists.
+
+Run `npm run test:accounts` to check signup, login, logout, session expiry,
+validation, password hashing, and isolation between accounts against MongoDB.
+The test requires access to create and drop a temporary `tableaux_test_*` database
+on the configured cluster. It deletes that temporary database when finished
+and does not change the app's database.

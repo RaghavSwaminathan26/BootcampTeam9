@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "test": "echo 'Install jest (or another unit test suite) to use this command.'",
     "prepare": "husky",
-    "seed": "npx tsx --env-file=.env.local src/scripts/seed-database.ts"
+    "seed": "npx tsx --env-file=.env.local src/scripts/seed-database.ts",
+    "test:accounts": "node --test src/tests/accounts.cjs"
   },
   "dependencies": {
     "dotenv": "^18.0.5",
