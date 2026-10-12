@@ -56,7 +56,28 @@ export default function VisitedRestaurants() {
       ) : visitedRestaurants.length ? (
         <section className={styles.grid} aria-label="Visited restaurants">
           {visitedRestaurants.map((restaurant) => (
-            <RestaurantCards key={restaurant.id} restaurant={restaurant} />
+            <RestaurantCards
+              key={restaurant.id}
+              restaurant={restaurant}
+              onRatingChange={async (rating) => {
+                const response = await fetch(`/api/restaurants/${restaurant.id}/rating`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ rating }),
+                });
+
+                if (!response.ok) {
+                  throw new Error("Unable to update restaurant rating.");
+                }
+
+                const updatedRestaurant: Restaurant = await response.json();
+                setRestaurants((previousRestaurants) =>
+                  previousRestaurants.map((existingRestaurant) =>
+                    existingRestaurant.id === updatedRestaurant.id ? updatedRestaurant : existingRestaurant,
+                  ),
+                );
+              }}
+            />
           ))}
         </section>
       ) : (
