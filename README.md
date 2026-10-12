@@ -64,9 +64,3 @@ still populates that separate collection; new accounts start with empty lists.
 The home page requires login and ranks your restaurants by rating, highest first,
 with unrated entries last and ties ordered by name. It fetches your collection
 once and displays 10 entries at a time; **Load more** reveals the next 10.
-
-Run `npm run test:accounts` to check signup, login, logout, session expiry,
-validation, password hashing, and isolation between accounts against MongoDB.
-The test requires access to create and drop a temporary `tableaux_test_*` database
-on the configured cluster. It deletes that temporary database when finished
-and does not change the app's database.
