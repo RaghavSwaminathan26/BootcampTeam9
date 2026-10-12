@@ -67,6 +67,20 @@ export default function VisitedRestaurants() {
             <RestaurantCards
               key={restaurant.id}
               restaurant={restaurant}
+              onRatingChange={async (rating) => {
+                const response = await fetch(`/api/restaurants/${restaurant.id}/rating`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ rating }),
+                });
+                if (response.status === 401) {
+                  await refresh();
+                  return;
+                }
+                if (!response.ok) throw new Error("Unable to update rating");
+                const updated: Restaurant = await response.json();
+                setRestaurants((previous) => previous.map((item) => (item.id === updated.id ? updated : item)));
+              }}
               onRestaurantChanged={(updated) =>
                 setRestaurants((previous) =>
                   previous.flatMap((item) => (item.id === restaurant.id ? (updated ? [updated] : []) : [item])),

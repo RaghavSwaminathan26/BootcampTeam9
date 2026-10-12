@@ -1,14 +1,13 @@
-import connectDB from "@/database/db";
-import RestaurantModel from "@/database/restaurantSchema";
-import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    await connectDB();
-    const count = await RestaurantModel.countDocuments({ status: "visited" });
-
-    return NextResponse.json({ count });
+    const user = await getCurrentUser();
+    const count = user?.restaurants.filter((restaurant) => restaurant.status === "visited").length ?? 0;
+    return Response.json({ count }, { headers: { "Cache-Control": "no-store" } });
   } catch {
-    return NextResponse.json({ error: "Failed to fetch visited restaurant count" }, { status: 500 });
+    return Response.json({ error: "Failed to fetch visited restaurant count" }, { status: 500 });
   }
 }
