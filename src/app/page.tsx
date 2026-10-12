@@ -1,7 +1,8 @@
 "use client";
 
-import { useAccount } from "@/components/AccountProvider";
+import { AccountGate, useAccount } from "@/components/AccountProvider";
 import Link from "next/link";
+import RankedRestaurants from "@/components/RankedRestaurants";
 import { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
 
@@ -15,7 +16,7 @@ export default function Home() {
   const [wantToVisitCountError, setWantToVisitCountError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !user) return;
     let active = true;
     setIsLoadingVisitedCount(true);
     setIsLoadingWantToVisitCount(true);
@@ -64,60 +65,63 @@ export default function Home() {
   }, [user, loading]);
 
   return (
-    <main className={styles.homeMain}>
-      <section className={styles.hero}>
-        <h1>Home</h1>
-      </section>
-      <section className={styles.collections} aria-label="Your restaurant collections">
-        <Link className={styles.collection} href="/visited">
-          <div className={styles.cardTop}>
-            <span className={styles.icon} aria-hidden="true">
-              ⌖
-            </span>
-            <span className={styles.arrow} aria-hidden="true">
-              ↗
-            </span>
-          </div>
-          <h2>Visited restaurants</h2>
-          {isLoadingVisitedCount ? (
-            <p className={styles.collectionStatus} role="status">
-              Loading your visited restaurant count…
-            </p>
-          ) : visitedCountError ? (
-            <p className={styles.collectionError} role="alert">
-              {visitedCountError}
-            </p>
-          ) : (
-            <p className={styles.collectionStatus}>
-              {visitedCount} {visitedCount === 1 ? "restaurant" : "restaurants"} visited
-            </p>
-          )}
-        </Link>
-        <Link className={styles.collection} href="/want-to-visit">
-          <div className={styles.cardTop}>
-            <span className={styles.icon} aria-hidden="true">
-              ＋
-            </span>
-            <span className={styles.arrow} aria-hidden="true">
-              ↗
-            </span>
-          </div>
-          <h2>Want to visit</h2>
-          {isLoadingWantToVisitCount ? (
-            <p className={styles.collectionStatus} role="status">
-              Loading your want-to-visit restaurant count…
-            </p>
-          ) : wantToVisitCountError ? (
-            <p className={styles.collectionError} role="alert">
-              {wantToVisitCountError}
-            </p>
-          ) : (
-            <p className={styles.collectionStatus}>
-              {wantToVisitCount} {wantToVisitCount === 1 ? "restaurant" : "restaurants"} to visit
-            </p>
-          )}
-        </Link>
-      </section>
-    </main>
+    <AccountGate>
+      <main className={styles.homeMain}>
+        <section className={styles.hero}>
+          <h1>Home</h1>
+        </section>
+        <section className={styles.collections} aria-label="Your restaurant collections">
+          <Link className={styles.collection} href="/visited">
+            <div className={styles.cardTop}>
+              <span className={styles.icon} aria-hidden="true">
+                ⌖
+              </span>
+              <span className={styles.arrow} aria-hidden="true">
+                ↗
+              </span>
+            </div>
+            <h2>Visited restaurants</h2>
+            {isLoadingVisitedCount ? (
+              <p className={styles.collectionStatus} role="status">
+                Loading your visited restaurant count…
+              </p>
+            ) : visitedCountError ? (
+              <p className={styles.collectionError} role="alert">
+                {visitedCountError}
+              </p>
+            ) : (
+              <p className={styles.collectionStatus}>
+                {visitedCount} {visitedCount === 1 ? "restaurant" : "restaurants"} visited
+              </p>
+            )}
+          </Link>
+          <Link className={styles.collection} href="/want-to-visit">
+            <div className={styles.cardTop}>
+              <span className={styles.icon} aria-hidden="true">
+                ＋
+              </span>
+              <span className={styles.arrow} aria-hidden="true">
+                ↗
+              </span>
+            </div>
+            <h2>Want to visit</h2>
+            {isLoadingWantToVisitCount ? (
+              <p className={styles.collectionStatus} role="status">
+                Loading your want-to-visit restaurant count…
+              </p>
+            ) : wantToVisitCountError ? (
+              <p className={styles.collectionError} role="alert">
+                {wantToVisitCountError}
+              </p>
+            ) : (
+              <p className={styles.collectionStatus}>
+                {wantToVisitCount} {wantToVisitCount === 1 ? "restaurant" : "restaurants"} to visit
+              </p>
+            )}
+          </Link>
+        </section>
+        <RankedRestaurants />
+      </main>
+    </AccountGate>
   );
 }
