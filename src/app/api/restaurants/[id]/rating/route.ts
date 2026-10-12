@@ -1,43 +1,36 @@
-import connectDB from "@/database/db";
-import RestaurantModel from "@/database/restaurantSchema";
-import type { Restaurant } from "@/types/restaurant";
-import { ObjectId } from "mongodb";
-import { NextResponse } from "next/server";
+import { Types } from "mongoose";
+import UserModel from "@/database/userSchema";
+import { getCurrentUser, isSameOrigin } from "@/lib/auth";
 
 type RouteContext = {
   params: { id: string };
 };
 
 export async function PATCH(request: Request, { params }: RouteContext) {
-  let rating: unknown;
+  if (!isSameOrigin(request)) return Response.json({ error: "Invalid request origin" }, { status: 403 });
 
   try {
-    ({ rating } = await request.json());
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
-
-  if (!ObjectId.isValid(params.id)) {
-    return NextResponse.json({ error: "Invalid restaurant ID" }, { status: 400 });
-  }
-
-  if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) {
-    return NextResponse.json({ error: "Rating must be a whole number from 1 to 5" }, { status: 400 });
-  }
-
-  try {
-    await connectDB();
-    const restaurant = await RestaurantModel.findOneAndUpdate(
-      { _id: params.id, status: "visited" },
-      { rating },
-      { new: true },
-    );
-
-    if (!restaurant) {
-      return NextResponse.json({ error: "Visited restaurant not found" }, { status: 404 });
+    const user = await getCurrentUser();
+    if (!user) return Response.json({ error: "Please log in first" }, { status: 401 });
+    const body = await request.json().catch(() => null);
+    const rating = body?.rating;
+    if (!/^[a-f0-9]{24}$/i.test(params.id)) {
+      return Response.json({ error: "Invalid restaurant ID" }, { status: 400 });
+    }
+    if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+      return Response.json({ error: "Rating must be a whole number from 1 to 5" }, { status: 400 });
     }
 
-    const updatedRestaurant: Restaurant = {
+    // Match the restaurant and its status together within the current account.
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: user._id, restaurants: { $elemMatch: { _id: new Types.ObjectId(params.id), status: "visited" } } },
+      { $set: { "restaurants.$.rating": rating } },
+      { new: true, runValidators: true },
+    );
+    const restaurant = updatedUser?.restaurants.find((item) => item._id.toString() === params.id.toLowerCase());
+    if (!restaurant) return Response.json({ error: "Visited restaurant not found" }, { status: 404 });
+
+    return Response.json({
       id: restaurant._id.toString(),
       name: restaurant.name,
       cuisine: restaurant.cuisine,
@@ -45,10 +38,8 @@ export async function PATCH(request: Request, { params }: RouteContext) {
       status: restaurant.status,
       rating: restaurant.rating,
       imageURL: restaurant.imageURL,
-    };
-
-    return NextResponse.json(updatedRestaurant);
+    });
   } catch {
-    return NextResponse.json({ error: "Failed to update restaurant rating" }, { status: 500 });
+    return Response.json({ error: "Failed to update restaurant rating" }, { status: 500 });
   }
 }

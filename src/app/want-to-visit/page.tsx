@@ -7,7 +7,6 @@ import { Restaurant } from "@/types/restaurant";
 import RestaurantCards from "@/components/RestaurantCards";
 import styles from "@/styles/RestaurantsList.module.css";
 
-//MyWishlist page
 export default function WishlistPage() {
   return (
     <AccountGate>
@@ -18,14 +17,11 @@ export default function WishlistPage() {
 
 function MyWishlist() {
   const { refresh } = useAccount();
-  //create state to allow for dynamic updates to restaurants list
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
-  //load status
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
 
-  //fetches restaurants from the api/restaurants route
-  const fetch_restaurants = useCallback(async () => {
+  const fetchRestaurants = useCallback(async () => {
     setStatus("loading");
 
     try {
@@ -38,19 +34,9 @@ function MyWishlist() {
         throw new Error(response.statusText);
       }
 
-      //get the data and filter for want-to-visit restaurants
-      const data = await response.json();
-      setRestaurants([]);
-      data.forEach((restaurant: Restaurant) => {
-        if (restaurant.status == "want-to-visit") {
-          setRestaurants((prevRestaurants) => [...prevRestaurants, restaurant]);
-        }
-      });
-
-      //finished loading
+      const data: Restaurant[] = await response.json();
+      setRestaurants(data.filter((restaurant) => restaurant.status === "want-to-visit"));
       setStatus("loaded");
-
-      //handle errors
     } catch (error) {
       console.error(error);
       setStatus("error");
@@ -58,43 +44,8 @@ function MyWishlist() {
   }, [refresh]);
 
   useEffect(() => {
-    //fetch the restaurants when the component mounts
-    fetch_restaurants();
-  }, [fetch_restaurants]);
-
-  //RestaurantsList component - update this with the card when it is created
-  function RestaurantsList() {
-    return (
-      <ul className={styles.grid} aria-label="Restaurants on your wishlist">
-        {restaurants.map((restaurant) => (
-          <li key={restaurant.id}>
-            <RestaurantCards restaurant={restaurant} />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  //creates the list according to the current status
-  const List = () => {
-    if (status === "loading") {
-      return (
-        <p className={styles.message} role="status">
-          Loading your wishlist…
-        </p>
-      );
-    } else if (status === "error") {
-      return (
-        <p className={styles.error} role="alert">
-          We could not load your wishlist. Please try again later.
-        </p>
-      );
-    } else if (restaurants.length === 0) {
-      return <p className={styles.empty}>You have not added any restaurants to your wishlist yet.</p>;
-    } else {
-      return <RestaurantsList />;
-    }
-  };
+    fetchRestaurants();
+  }, [fetchRestaurants]);
 
   return (
     <main className={styles.page}>
@@ -107,7 +58,30 @@ function MyWishlist() {
           onRestaurantAdded={(restaurant) => setRestaurants((previous) => [...previous, restaurant])}
         />
       )}
-      <List />
+      {status === "loading" ? (
+        <p className={styles.message} role="status">
+          Loading your wishlist…
+        </p>
+      ) : status === "error" ? (
+        <p className={styles.error} role="alert">
+          We could not load your wishlist. Please try again later.
+        </p>
+      ) : restaurants.length === 0 ? (
+        <p className={styles.empty}>You have not added any restaurants to your wishlist yet.</p>
+      ) : (
+        <ul className={styles.grid} aria-label="Restaurants on your wishlist">
+          {restaurants.map((restaurant) => (
+            <li key={restaurant.id}>
+              <RestaurantCards
+                restaurant={restaurant}
+                onRestaurantChanged={() =>
+                  setRestaurants((previous) => previous.filter((item) => item.id !== restaurant.id))
+                }
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   );
 }

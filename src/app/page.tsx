@@ -1,10 +1,12 @@
 "use client";
 
+import { useAccount } from "@/components/AccountProvider";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
 
 export default function Home() {
+  const { user, loading } = useAccount();
   const [visitedCount, setVisitedCount] = useState<number | null>(null);
   const [wantToVisitCount, setWantToVisitCount] = useState<number | null>(null);
   const [isLoadingVisitedCount, setIsLoadingVisitedCount] = useState(true);
@@ -13,6 +15,12 @@ export default function Home() {
   const [wantToVisitCountError, setWantToVisitCountError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (loading) return;
+    let active = true;
+    setIsLoadingVisitedCount(true);
+    setIsLoadingWantToVisitCount(true);
+    setVisitedCountError(null);
+    setWantToVisitCountError(null);
     async function loadCount(
       endpoint: string,
       setCount: (count: number) => void,
@@ -28,11 +36,11 @@ export default function Home() {
         }
 
         const data: { count: number } = await response.json();
-        setCount(data.count);
+        if (active) setCount(data.count);
       } catch {
-        setError(errorMessage);
+        if (active) setError(errorMessage);
       } finally {
-        setIsLoading(false);
+        if (active) setIsLoading(false);
       }
     }
 
@@ -50,7 +58,10 @@ export default function Home() {
       setIsLoadingWantToVisitCount,
       "We could not load your want-to-visit restaurant count. Please try again later.",
     );
-  }, []);
+    return () => {
+      active = false;
+    };
+  }, [user, loading]);
 
   return (
     <main className={styles.homeMain}>

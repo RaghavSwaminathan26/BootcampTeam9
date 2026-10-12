@@ -2,27 +2,23 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { RestaurantInput } from "@/types/restaurant";
 
 const mocks = vi.hoisted(() => ({
-  connectDB: vi.fn(),
-  find: vi.fn(),
-  create: vi.fn(),
+  getCurrentUser: vi.fn(),
+  updateOne: vi.fn(),
 }));
 
-vi.mock("@/database/db", () => ({
-  default: mocks.connectDB,
+vi.mock("@/lib/auth", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/auth")>()),
+  getCurrentUser: mocks.getCurrentUser,
 }));
-
-vi.mock("@/database/restaurantSchema", () => ({
-  default: {
-    find: mocks.find,
-    create: mocks.create,
-  },
-}));
+vi.mock("@/database/userSchema", () => ({ default: { updateOne: mocks.updateOne } }));
 
 import { GET, POST } from "./route";
 
 describe("Restaurant API routes", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mocks.getCurrentUser.mockResolvedValue({ _id: "account-id", restaurants: [] });
+    mocks.updateOne.mockResolvedValue({ matchedCount: 1 });
   });
 
   it("GET returns restaurants in the Restaurant format", async () => {
@@ -38,13 +34,12 @@ describe("Restaurant API routes", () => {
       imageURL: "https://example.com/sushi.jpg",
     };
 
-    mocks.find.mockResolvedValue([databaseRestaurant]);
+    mocks.getCurrentUser.mockResolvedValue({ _id: "account-id", restaurants: [databaseRestaurant] });
 
     const response = await GET();
 
     expect(response.status).toBe(200);
-    expect(mocks.connectDB).toHaveBeenCalledOnce();
-    expect(mocks.find).toHaveBeenCalledWith({});
+    expect(mocks.getCurrentUser).toHaveBeenCalledOnce();
 
     expect(await response.json()).toEqual([
       {
@@ -69,9 +64,9 @@ describe("Restaurant API routes", () => {
 
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({
-      error: "Invalid JSON",
+      error: "Invalid restaurant",
     });
-    expect(mocks.create).not.toHaveBeenCalled();
+    expect(mocks.updateOne).not.toHaveBeenCalled();
   });
 
   it("POST creates and returns a valid Restaurant", async () => {
@@ -84,11 +79,6 @@ describe("Restaurant API routes", () => {
       imageURL: "https://example.com/tacos.jpg",
     };
 
-    mocks.create.mockResolvedValue({
-      _id: { toString: () => "new-id-123" },
-      ...restaurant,
-    });
-
     const request = new Request("http://localhost/api/restaurants", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -98,9 +88,13 @@ describe("Restaurant API routes", () => {
     const response = await POST(request);
 
     expect(response.status).toBe(201);
-    expect(mocks.create).toHaveBeenCalledWith(restaurant);
+    expect(mocks.updateOne).toHaveBeenCalledWith(
+      { _id: "account-id" },
+      { $push: { restaurants: expect.objectContaining(restaurant) } },
+      { runValidators: true },
+    );
     expect(await response.json()).toEqual({
-      id: "new-id-123",
+      id: expect.stringMatching(/^[a-f0-9]{24}$/),
       ...restaurant,
     });
   });

@@ -35,6 +35,7 @@
   color: var(--on-accent);
   font-weight: 600;
   transition:
+    var(--press-transition),
     transform 400ms var(--ease),
     background 300ms ease;
 }

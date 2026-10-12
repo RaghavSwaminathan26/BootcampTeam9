@@ -20,6 +20,7 @@
   --nav-text: #4c3525;
   --nav-text-active: #382418;
   --nav-indicator: #a85524;
+  --press-transition: scale 450ms cubic-bezier(0.34, 1.8, 0.4, 1), translate 450ms cubic-bezier(0.34, 1.8, 0.4, 1);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -41,6 +42,7 @@ body {
   color: var(--background);
 }
 a {
+  display: inline-block;
   color: inherit;
 }
 button,
@@ -131,7 +133,27 @@ textarea:focus {
     filter: blur(0);
   }
 }
+/* Independent transforms preserve each control's existing hover movement. */
+:where(button, input[type="submit"], a[href]) {
+  transition: var(--press-transition);
+}
+
+button:not(:disabled):active,
+input[type="submit"]:not(:disabled):active,
+a[href]:active {
+  scale: 0.94 0.86;
+  translate: 0 3px;
+  transition-duration: 90ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  button,
+  input[type="submit"],
+  a[href] {
+    scale: none !important;
+    translate: none !important;
+  }
+
   *,
   *::before,
   *::after {
