@@ -109,6 +109,14 @@
   font-weight: 600;
   letter-spacing: -0.025em;
 }
+.collectionStatus,
+.collectionError {
+  margin: 0;
+  color: var(--muted);
+}
+.collectionError {
+  color: #f0b8b1;
+}
 .collection p {
   max-width: 350px;
   color: var(--muted);

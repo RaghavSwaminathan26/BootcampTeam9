@@ -41,6 +41,9 @@ require.extensions[".ts"] = (module, filename) => {
 const users = require("../app/api/users/route.ts");
 const sessions = require("../app/api/session/route.ts");
 const restaurants = require("../app/api/restaurants/route.ts");
+const ratings = require("../app/api/restaurants/[id]/rating/route.ts");
+const visitedCount = require("../app/api/restaurants/visited-count/route.ts");
+const wishlistCount = require("../app/api/restaurants/want-to-visit-count/route.ts");
 const UserModel = require("../database/userSchema.ts").default;
 const SessionModel = require("../database/sessionSchema.ts").default;
 const { hashPassword, verifyPassword } = require("../lib/password.ts");
@@ -74,6 +77,7 @@ test("passwords use unique salts and reject the wrong password", async () => {
 test("signup, login, account isolation, embedded restaurants, expiry, and logout", async () => {
   assert.equal((await users.GET()).status, 401);
   assert.equal((await restaurants.GET()).status, 401);
+  assert.deepEqual(await (await visitedCount.GET()).json(), { count: 0 });
   assert.equal((await restaurants.PATCH(request({ id: "a".repeat(24), status: "visited" }, "PATCH"))).status, 401);
   assert.equal((await restaurants.DELETE(request({ id: "a".repeat(24) }, "DELETE"))).status, 401);
   assert.equal((await restaurants.POST(request(restaurant))).status, 401);
@@ -110,10 +114,26 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   assert.equal(added.status, 201);
   const addedRestaurant = await added.json();
   assert.match(addedRestaurant.id, /^[a-f0-9]{24}$/);
+  const ratingContext = { params: { id: addedRestaurant.id } };
+  const rated = await ratings.PATCH(request({ rating: 5 }, "PATCH"), ratingContext);
+  assert.equal(rated.status, 200);
+  assert.equal((await rated.json()).rating, 5);
+  assert.equal((await (await restaurants.GET()).json())[0].rating, 5);
+  for (const rating of [0, 6, 2.5, "5", null]) {
+    assert.equal((await ratings.PATCH(request({ rating }, "PATCH"), ratingContext)).status, 400);
+  }
+  assert.equal(
+    (await ratings.PATCH(request({ rating: 2 }, "PATCH", "https://other.example"), ratingContext)).status,
+    403,
+  );
   for (const status of ["want-to-visit", "want-to-visit", "visited"]) {
     assert.equal((await restaurants.PATCH(request({ id: addedRestaurant.id, status }, "PATCH"))).status, 204);
     const saved = (await (await restaurants.GET()).json()).find((item) => item.id === addedRestaurant.id);
     assert.equal(saved.status, status);
+    assert.equal(saved.rating, 5);
+    if (status === "want-to-visit") {
+      assert.equal((await ratings.PATCH(request({ rating: 2 }, "PATCH"), ratingContext)).status, 404);
+    }
     assert.equal(saved.imageURL, "https://example.com/restaurant.jpg");
   }
   for (const body of [null, { id: "invalid", status: "visited" }, { id: addedRestaurant.id, status: "invalid" }]) {
@@ -145,14 +165,18 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   ]);
   concurrent.forEach((response) => assert.equal(response.status, 201));
   assert.equal((await (await restaurants.GET()).json()).length, 3);
+  assert.deepEqual(await (await visitedCount.GET()).json(), { count: 2 });
+  assert.deepEqual(await (await wishlistCount.GET()).json(), { count: 1 });
   assert.equal((await UserModel.findById(storedUser._id)).restaurants.length, 3);
 
   assert.equal((await sessions.DELETE(request(undefined, "DELETE"))).status, 200);
   cookieValues.set("tableaux-session", firstToken);
   assert.equal((await restaurants.GET()).status, 401);
+  assert.equal((await ratings.PATCH(request({ rating: 2 }, "PATCH"), ratingContext)).status, 401);
   cookieValues.clear();
   assert.equal((await users.POST(request(second))).status, 201);
   assert.deepEqual(await (await restaurants.GET()).json(), []);
+  assert.equal((await ratings.PATCH(request({ rating: 2 }, "PATCH"), ratingContext)).status, 404);
   assert.equal(
     (await restaurants.PATCH(request({ id: addedRestaurant.id, status: "want-to-visit" }, "PATCH"))).status,
     404,
@@ -168,6 +192,7 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   assert.equal((await sessions.POST(request(first))).status, 200);
   assert.deepEqual(await (await users.GET()).json(), { username: first.username });
   assert.equal((await (await restaurants.GET()).json()).length, 3);
+  assert.equal((await (await restaurants.GET()).json()).find((item) => item.id === addedRestaurant.id).rating, 5);
   await SessionModel.updateMany({}, { expiresAt: new Date(0) });
   assert.equal((await restaurants.GET()).status, 401);
   assert.equal((await users.GET()).status, 401);
