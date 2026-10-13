@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="480" viewBox="0 0 600 480" fill="none">
+  <style>
+    .float { animation: drift 28s ease-in-out infinite; }
+    .tear-top { transform: translateX(4px); }
+    .tear-bottom { transform: translateX(-3px); }
+    .echo { opacity: 0.2; }
+    .food:nth-child(2n) .float { animation-duration: 33s; animation-delay: -11s; animation-direction: reverse; }
+    .food:nth-child(3n) .float { animation-duration: 30s; animation-delay: -19s; }
+    @keyframes drift {
+      0%, 100% { transform: translate(-12px, 10px) rotate(-2deg); }
+      33% { transform: translate(16px, -18px) rotate(2deg); }
+      66% { transform: translate(-18px, -8px) rotate(-1deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .float { animation: none; }
+    }
+  </style>
+  <defs>
+    <g id="pizza">
+      <path d="M-24-23Q0-34 24-23L0 28Z M-20-16Q0-25 20-16"/>
+      <circle cx="-7" cy="-8" r="3"/>
+      <circle cx="7" cy="-5" r="3"/>
+      <circle cx="0" cy="10" r="3"/>
+    </g>
+    <g id="burger">
+      <path d="M-27-5C-25-34 25-34 27-5Z M-28 3H28 M-26 11H26L22 23H-22Z M-25 3L-15 8-4 3 8 8 20 3 M-11-16L-9-18 M3-20L5-18 M15-14L17-16"/>
+    </g>
+    <g id="noodles">
+      <path d="M-27 0H27C24 18 13 24 0 24S-24 18-27 0Z M-10 25H10 M7-8L26-31 M15-7L35-26 M-15-8C-23-15-9-18-15-26 M-3-8C-11-15 3-18-3-26"/>
+    </g>
+    <g id="taco">
+      <path d="M-29 17C-28-27 28-27 29 17Z M-21 10C-18-16 18-16 21 10 M-25-1L-30-7-20-12-18-20-7-18 0-24 9-18 20-18 22-10 29-5 26 2 M-11 4L-5 0 M5 8L11 3"/>
+    </g>
+    <g id="fries">
+      <path d="M-20-5L-15 26H15L20-5Z M-16-6L-20-27-12-29-7-6 M-5-6V-33H3V-6 M7-6L13-29 21-27 16-6 M-8 8L0 14 8 8"/>
+    </g>
+    <g id="cup">
+      <path d="M-20-9H17V12Q17 23 6 23H-9Q-20 23-20 12Z M17-5H23C36-5 34 13 18 13 M-25 29H23 M-11-18C-18-25-4-28-11-35 M3-18C-4-25 10-28 3-35"/>
+    </g>
+    <clipPath id="slice-top" clipPathUnits="userSpaceOnUse">
+      <path d="M-45-14H45V-5H-45Z"/>
+    </clipPath>
+    <clipPath id="slice-bottom" clipPathUnits="userSpaceOnUse">
+      <path d="M-45 8H45V14H-45Z"/>
+    </clipPath>
+    <mask id="gaps" maskUnits="userSpaceOnUse" x="-50" y="-50" width="100" height="100">
+      <path fill="white" d="M-50-50H50V50H-50Z"/>
+      <path fill="black" d="M-50-14H50V-5H-50Z M-50 8H50V14H-50Z"/>
+    </mask>
+  </defs>
+  <g stroke="#eea15b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.24">
+    <g class="food" transform="translate(80 75)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#pizza" transform="translate(-4 1)"/>
+        </g>
+        <use href="#pizza" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#pizza" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#pizza" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#pizza" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g class="food" transform="translate(285 105)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#burger" transform="translate(-4 1)"/>
+        </g>
+        <use href="#burger" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#burger" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#burger" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#burger" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g class="food" transform="translate(495 65)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#noodles" transform="translate(-4 1)"/>
+        </g>
+        <use href="#noodles" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#noodles" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#noodles" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#noodles" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g class="food" transform="translate(165 310)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#cup" transform="translate(-4 1)"/>
+        </g>
+        <use href="#cup" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#cup" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#cup" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#cup" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g class="food" transform="translate(385 335)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#taco" transform="translate(-4 1)"/>
+        </g>
+        <use href="#taco" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#taco" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#taco" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#taco" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g class="food" transform="translate(535 285)">
+      <g class="float">
+        <g class="echo" stroke="#ff6b28">
+          <use href="#fries" transform="translate(-4 1)"/>
+        </g>
+        <use href="#fries" mask="url(#gaps)"/>
+        <g class="tear-top">
+          <use href="#fries" clip-path="url(#slice-top)" stroke="#ffc28a"/>
+          <use href="#fries" clip-path="url(#slice-top)" stroke="#f7ecd9" transform="translate(3 0)" opacity="0.45"/>
+          <path d="M27-12H39 M32-8H45" stroke-width="1" opacity="0.65"/>
+        </g>
+        <g class="tear-bottom">
+          <use href="#fries" clip-path="url(#slice-bottom)"/>
+          <path d="M-39 9H-28 M-44 13H-35" stroke-width="1" opacity="0.65"/>
+        </g>
+      </g>
+    </g>
+    <g opacity="0.35" stroke-width="1">
+      <path d="M175 180H187 M191 180H195 M420 190H432 M65 405H74 M270 420H282 M464 432H470"/>
+      <path d="M38 222H42V225H38Z M352 215H358V218H352Z"/>
+    </g>
+  </g>
+</svg>

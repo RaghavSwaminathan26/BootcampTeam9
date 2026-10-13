@@ -1,41 +1,54 @@
 .aboutMain {
-  flex: 1;
-  background-color: #fff8f0;
+  width: min(800px, 100%);
+  margin: auto;
+  padding: 5.5rem 2rem;
 }
-
-.aboutSection {
-  max-width: 615px;
-  margin: 40px auto 100px;
-}
-
-.preHeader {
-  color: #e8590c;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.aboutSection pText {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 2px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #2d1a0e;
-}
-
 .aboutMain h1 {
-  font-size: 45px;
-  font-weight: 750;
-  letter-spacing: 2px;
-  color: #2d1a0e;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  margin-bottom: 2.5rem;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
 }
-
+.intro {
+  margin-bottom: 3rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+.aboutSection {
+  border-top: 1px solid var(--border);
+}
+.aboutSection section {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
 .aboutSection h2 {
-  font-size: 20px;
-  font-weight: 750;
-  letter-spacing: 2px;
-  color: #2d1a0e;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  margin-bottom: 0.8rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.aboutSection p {
+  max-width: 620px;
+  margin-bottom: 0;
+  color: var(--muted);
+}
+.link {
+  display: inline-flex;
+  gap: 1.5rem;
+  margin-top: 2.25rem;
+  padding: 0.65rem 0;
+  color: var(--accent);
+  text-decoration: none;
+  transition:
+    gap 400ms var(--ease),
+    color 300ms ease;
+}
+.link:hover {
+  gap: 2rem;
+  color: var(--text);
+}
+@media (max-width: 600px) {
+  .aboutMain {
+    padding: 3.5rem 1.25rem;
+  }
 }
