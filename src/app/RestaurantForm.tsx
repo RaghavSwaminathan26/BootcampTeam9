@@ -52,7 +52,8 @@ export default function RestaurantForm({ onRestaurantAdded, status = "visited" }
       }
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to add restaurant");
+        setMessage(data.error || "Unable to add restaurant");
+        return;
       }
       //get new Restaurant from backend
       const newRestaurant: Restaurant = await response.json();
