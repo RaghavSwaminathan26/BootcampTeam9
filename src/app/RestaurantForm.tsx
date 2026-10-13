@@ -27,6 +27,11 @@ export default function RestaurantForm({ onRestaurantAdded, status = "visited" }
     setMessage("");
     setSaving(true);
 
+    if (name === "" || cuisine === "" || location === "") {
+      setMessage("Please fill out all required fields.");
+      return null;
+    }
+
     try {
       //send info inputed to backend
       const response = await fetch("/api/restaurants", {
