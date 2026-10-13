@@ -1,49 +1,127 @@
+"use client";
+
+import { AccountGate, useAccount } from "@/components/AccountProvider";
+import Link from "next/link";
+import RankedRestaurants from "@/components/RankedRestaurants";
+import { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
 
 export default function Home() {
+  const { user, loading } = useAccount();
+  const [visitedCount, setVisitedCount] = useState<number | null>(null);
+  const [wantToVisitCount, setWantToVisitCount] = useState<number | null>(null);
+  const [isLoadingVisitedCount, setIsLoadingVisitedCount] = useState(true);
+  const [isLoadingWantToVisitCount, setIsLoadingWantToVisitCount] = useState(true);
+  const [visitedCountError, setVisitedCountError] = useState<string | null>(null);
+  const [wantToVisitCountError, setWantToVisitCountError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loading || !user) return;
+    let active = true;
+    setIsLoadingVisitedCount(true);
+    setIsLoadingWantToVisitCount(true);
+    setVisitedCountError(null);
+    setWantToVisitCountError(null);
+    async function loadCount(
+      endpoint: string,
+      setCount: (count: number) => void,
+      setError: (error: string) => void,
+      setIsLoading: (isLoading: boolean) => void,
+      errorMessage: string,
+    ) {
+      try {
+        const response = await fetch(endpoint);
+
+        if (!response.ok) {
+          throw new Error("Unable to load restaurant count.");
+        }
+
+        const data: { count: number } = await response.json();
+        if (active) setCount(data.count);
+      } catch {
+        if (active) setError(errorMessage);
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    }
+
+    loadCount(
+      "/api/restaurants/visited-count",
+      setVisitedCount,
+      setVisitedCountError,
+      setIsLoadingVisitedCount,
+      "We could not load your visited restaurant count. Please try again later.",
+    );
+    loadCount(
+      "/api/restaurants/want-to-visit-count",
+      setWantToVisitCount,
+      setWantToVisitCountError,
+      setIsLoadingWantToVisitCount,
+      "We could not load your want-to-visit restaurant count. Please try again later.",
+    );
+    return () => {
+      active = false;
+    };
+  }, [user, loading]);
+
   return (
-    <>
+    <AccountGate>
       <main className={styles.homeMain}>
         <section className={styles.hero}>
-          <div className={styles.heroOverlay}></div>
-          <div className={styles.heroText}>
-            <p className={styles.preHeader}>YOUR PERSONAL DINNING JOURNAL</p>
-            <h1>
-              Every great meal <br /> <em>deserves to be remembered.</em>
-            </h1>
-          </div>
+          <h1>Home</h1>
         </section>
-
-        <section className={styles.stats}>
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>RESTAURANTS VISITED</span>
-          </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>ON THE WISHLIST</span>
-          </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>6</span>
-            <span className={styles.statLabel}>COUNTRIES EXPLORED</span>
-          </div>
-
-          <div className={styles.stat}>
-            <span className={styles.statNumber}>4.8</span>
-            <span className={styles.statLabel}>AVERAGE RATING</span>
-          </div>
+        <section className={styles.collections} aria-label="Your restaurant collections">
+          <Link className={styles.collection} href="/visited">
+            <div className={styles.cardTop}>
+              <span className={styles.icon} aria-hidden="true">
+                ⌖
+              </span>
+              <span className={styles.arrow} aria-hidden="true">
+                ↗
+              </span>
+            </div>
+            <h2>Visited restaurants</h2>
+            {isLoadingVisitedCount ? (
+              <p className={styles.collectionStatus} role="status">
+                Loading your visited restaurant count…
+              </p>
+            ) : visitedCountError ? (
+              <p className={styles.collectionError} role="alert">
+                {visitedCountError}
+              </p>
+            ) : (
+              <p className={styles.collectionStatus}>
+                {visitedCount} {visitedCount === 1 ? "restaurant" : "restaurants"} visited
+              </p>
+            )}
+          </Link>
+          <Link className={styles.collection} href="/want-to-visit">
+            <div className={styles.cardTop}>
+              <span className={styles.icon} aria-hidden="true">
+                ＋
+              </span>
+              <span className={styles.arrow} aria-hidden="true">
+                ↗
+              </span>
+            </div>
+            <h2>Want to visit</h2>
+            {isLoadingWantToVisitCount ? (
+              <p className={styles.collectionStatus} role="status">
+                Loading your want-to-visit restaurant count…
+              </p>
+            ) : wantToVisitCountError ? (
+              <p className={styles.collectionError} role="alert">
+                {wantToVisitCountError}
+              </p>
+            ) : (
+              <p className={styles.collectionStatus}>
+                {wantToVisitCount} {wantToVisitCount === 1 ? "restaurant" : "restaurants"} to visit
+              </p>
+            )}
+          </Link>
         </section>
-
-        <section className={styles.highlights}>
-          <div className={styles.highlightHeader}>
-            <p className={styles.highlightPreheader}>Recent Highlights</p>
-            <h2>From the Dining Log</h2>
-            <a href="/visited">See All</a>
-          </div>
-        </section>
+        <RankedRestaurants />
       </main>
-    </>
+    </AccountGate>
   );
 }
