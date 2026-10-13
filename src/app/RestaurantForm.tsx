@@ -1,5 +1,6 @@
 "use client";
 
+import { CUISINES } from "@/data/cuisines";
 import { useAccount } from "@/components/AccountProvider";
 import { useState } from "react";
 import { Restaurant } from "@/types/restaurant";
@@ -29,6 +30,7 @@ export default function RestaurantForm({ onRestaurantAdded, status = "visited" }
 
     if (name === "" || cuisine === "" || location === "") {
       setMessage("Please fill out all required fields.");
+      setSaving(false);
       return null;
     }
 
@@ -58,6 +60,7 @@ export default function RestaurantForm({ onRestaurantAdded, status = "visited" }
       //get new Restaurant from backend
       const newRestaurant: Restaurant = await response.json();
       onRestaurantAdded(newRestaurant);
+      window.dispatchEvent(new Event("dining-updated"));
       setMessage("New Restaurant successfully added");
       setName("");
       setCuisine("");
@@ -84,16 +87,22 @@ export default function RestaurantForm({ onRestaurantAdded, status = "visited" }
           disabled={saving}
           required
         />
-        <input
-          type="text"
+        <select
           aria-label="Cuisine"
-          placeholder="Cuisine"
           value={cuisine}
           onChange={(e) => setCuisine(e.target.value)}
-          maxLength={200}
           disabled={saving}
           required
-        />
+        >
+          <option value="" disabled>
+            Select a cuisine
+          </option>
+          {CUISINES.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           aria-label="Location"

@@ -6,6 +6,7 @@ const UserSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
+    achievements: { type: [String], default: [] },
     restaurants: { type: [restaurantSchema], default: [] },
   },
   { collection: "users" },

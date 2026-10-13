@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Atkinson_Hyperlegible } from "next/font/google";
 import { AccountProvider } from "@/components/AccountProvider";
+import { TastingAtlasProvider } from "@/components/TastingAtlas";
 import Navbar from "@/components/Navbar";
 
 import "./globals.css";
@@ -23,8 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={readableFont.variable}>
       <body>
         <AccountProvider>
-          <Navbar />
-          {children}
+          <TastingAtlasProvider>
+            <Navbar />
+            {children}
+          </TastingAtlasProvider>
         </AccountProvider>
       </body>
     </html>

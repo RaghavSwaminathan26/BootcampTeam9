@@ -162,3 +162,14 @@ a[href]:active {
     scroll-behavior: auto !important;
   }
 }
+
+select {
+  font: inherit;
+  min-width: 0;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--input-background);
+  color: var(--text);
+}
