@@ -45,6 +45,7 @@ export default function RestaurantCards({ restaurant, onRestaurantChanged, onRat
         return;
       }
       if (!response.ok) throw new Error("Unable to update restaurant");
+      window.dispatchEvent(new Event("dining-updated"));
 
       const finish = () => {
         onRestaurantChanged(status ? { ...restaurant, status } : null);

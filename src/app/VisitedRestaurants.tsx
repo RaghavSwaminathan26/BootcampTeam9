@@ -78,6 +78,7 @@ export default function VisitedRestaurants() {
                   return;
                 }
                 if (!response.ok) throw new Error("Unable to update rating");
+                window.dispatchEvent(new Event("dining-updated"));
                 const updated: Restaurant = await response.json();
                 setRestaurants((previous) => previous.map((item) => (item.id === updated.id ? updated : item)));
               }}

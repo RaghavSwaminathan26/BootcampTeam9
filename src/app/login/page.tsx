@@ -1,5 +1,6 @@
 "use client";
 
+import TastingAtlas from "@/components/TastingAtlas";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -67,6 +68,7 @@ export default function Login() {
               Logged in as <strong>{user.username}</strong>.
             </p>
             <Link href="/visited">View your restaurants →</Link>
+            <TastingAtlas />
             <button className={styles.primary} disabled={saving} onClick={logout}>
               {saving ? "Logging out…" : "Log out"}
             </button>
