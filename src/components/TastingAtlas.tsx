@@ -49,7 +49,7 @@ export function TastingAtlasProvider({ children }: { children: React.ReactNode }
         setData(next);
         setError("");
         // A per-account receipt avoids replaying old celebrations on navigation.
-        const key = `tableaux-atlas-seen:${user.username}`;
+        const key = `DiningDiary-atlas-seen:${user.username}`;
         let seen = seenInSession.current.get(key) ?? next.earned;
         try {
           const stored: unknown = JSON.parse(window.localStorage.getItem(key) || "null");

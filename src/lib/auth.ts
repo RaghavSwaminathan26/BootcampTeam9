@@ -4,7 +4,7 @@ import connectDB from "@/database/db";
 import SessionModel from "@/database/sessionSchema";
 import UserModel from "@/database/userSchema";
 
-const cookieName = "tableaux-session";
+const cookieName = "DiningDiary-session";
 const sessionLength = 60 * 60 * 24 * 7;
 const cookieOptions = {
   httpOnly: true,
