@@ -15,7 +15,7 @@ const readableFont = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
-  title: "Tableaux | Your dining journal",
+  title: "DiningDiary | Your dining journal",
   description: "Keep track of the restaurants you love and the places you want to try.",
 };
 

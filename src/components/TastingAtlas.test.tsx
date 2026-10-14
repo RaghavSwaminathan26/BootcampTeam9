@@ -45,7 +45,7 @@ it("opens all discoveries, zooms, selects a reward and restores body scrolling o
   fireEvent.click(screen.getByRole("button", { name: "Close Tasting Atlas" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
   expect(document.body.style.overflow).toBe("");
-  await waitFor(() => expect(window.localStorage.getItem("tableaux-atlas-seen:atlas-tester")).toBe("[]"));
+  await waitFor(() => expect(window.localStorage.getItem("DiningDiary-atlas-seen:atlas-tester")).toBe("[]"));
 });
 it("celebrates a newly earned discovery after a dining update without replaying it", async () => {
   const fetchMock = vi
@@ -58,7 +58,7 @@ it("celebrates a newly earned discovery after a dining update without replaying 
       <TastingAtlas />
     </TastingAtlasProvider>,
   );
-  await waitFor(() => expect(window.localStorage.getItem("tableaux-atlas-seen:atlas-tester")).toBe("[]"));
+  await waitFor(() => expect(window.localStorage.getItem("DiningDiary-atlas-seen:atlas-tester")).toBe("[]"));
   fireEvent(window, new Event("dining-updated"));
   expect(await screen.findByText("The first bite")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: /The first bite/ })).toHaveAttribute("href", "/login#atlas=first-bite");

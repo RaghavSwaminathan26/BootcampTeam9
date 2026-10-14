@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 require("dotenv").config({ path: ".env.local", quiet: true });
 
 if (!process.env.MONGODB_URI) throw new Error("Set MONGODB_URI in .env.local to run account tests");
-const databaseName = `tableaux_test_${Date.now()}_${process.pid}`;
+const databaseName = `DiningDiary_test_${Date.now()}_${process.pid}`;
 const uri = new URL(process.env.MONGODB_URI);
 uri.pathname = `/${databaseName}`;
 process.env.MONGODB_URI = uri.toString();
@@ -95,9 +95,9 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   assert.notEqual(storedUser.password, first.password);
   assert.equal((await UserModel.findById(storedUser._id)).password, undefined);
   assert.equal((await users.POST(request(first))).status, 409);
-  assert.equal(cookieSettings.get("tableaux-session").httpOnly, true);
-  assert.equal(cookieSettings.get("tableaux-session").sameSite, "lax");
-  const firstToken = cookieValues.get("tableaux-session");
+  assert.equal(cookieSettings.get("DiningDiary-session").httpOnly, true);
+  assert.equal(cookieSettings.get("DiningDiary-session").sameSite, "lax");
+  const firstToken = cookieValues.get("DiningDiary-session");
   assert.equal(await SessionModel.countDocuments({ token: firstToken }), 0);
 
   assert.equal((await restaurants.POST(request({ ...restaurant, name: " " }))).status, 400);
@@ -170,7 +170,7 @@ test("signup, login, account isolation, embedded restaurants, expiry, and logout
   assert.equal((await UserModel.findById(storedUser._id)).restaurants.length, 3);
 
   assert.equal((await sessions.DELETE(request(undefined, "DELETE"))).status, 200);
-  cookieValues.set("tableaux-session", firstToken);
+  cookieValues.set("DiningDiary-session", firstToken);
   assert.equal((await restaurants.GET()).status, 401);
   assert.equal((await ratings.PATCH(request({ rating: 2 }, "PATCH"), ratingContext)).status, 401);
   cookieValues.clear();
